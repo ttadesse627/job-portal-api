@@ -9,9 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Objects;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +26,13 @@ public class UserService {
         user.setPasswordHash(passwordEncoder.encode(userRequestDTO.password()));
 
         return mapToResponse(userRepository.save(user));
+    }
+
+    public UserResponseDTO getById(Long id)
+    {
+        return userRepository.findById(id)
+                .map(this::mapToResponse)
+                .orElseThrow(() -> new EntityNotFoundException("The user with id "+id+"doesn't exist!"));
     }
 
     public UserResponseDTO mapToResponse(AppUser user)
