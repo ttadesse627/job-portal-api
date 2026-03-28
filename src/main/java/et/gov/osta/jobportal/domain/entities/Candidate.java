@@ -19,7 +19,7 @@ public class Candidate {
     private String firstName;
     private String lastName;
 
-    @OneToOne(mappedBy = "candidates", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
     private Resume resume;
 
     @ManyToMany(mappedBy = "candidates")
