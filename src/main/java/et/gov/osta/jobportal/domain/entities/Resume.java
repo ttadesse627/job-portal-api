@@ -1,7 +1,11 @@
 package et.gov.osta.jobportal.domain.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 public class Resume {
     @Id
