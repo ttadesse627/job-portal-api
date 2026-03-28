@@ -18,14 +18,20 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserResponseDTO create(CreateUserRequestDTO userRequestDTO, Role role)
+
+    public AppUser save(CreateUserRequestDTO userRequestDTO, Role role)
     {
         AppUser user = new AppUser();
         user.setEmail(userRequestDTO.email());
         user.setRole(role);
         user.setPasswordHash(passwordEncoder.encode(userRequestDTO.password()));
 
-        return mapToResponse(userRepository.save(user));
+        return userRepository.save(user);
+    }
+
+    public UserResponseDTO create(CreateUserRequestDTO userRequestDTO, Role role)
+    {
+        return mapToResponse(save(userRequestDTO, role));
     }
 
     public UserResponseDTO getById(Long id)
