@@ -7,13 +7,18 @@ import et.gov.osta.jobportal.dtos.requests.CreateUserRequestDTO;
 import et.gov.osta.jobportal.dtos.responses.UserResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -39,6 +44,17 @@ public class UserService {
         return userRepository.findById(id)
                 .map(this::mapToResponse)
                 .orElseThrow(() -> new EntityNotFoundException("The user with id "+id+"doesn't exist!"));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
+        AppUser user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("The user with email "+email+" doesn't exist!"));
+        return User.builder()
+                .username(user.getEmail())
+                .password(user.getPasswordHash())
+                .roles(user.getRole().name())
+                .build();
     }
 
     public UserResponseDTO mapToResponse(AppUser user)
