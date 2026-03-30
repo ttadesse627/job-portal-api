@@ -1,0 +1,32 @@
+### GET Employers
+GET {{host}}/api/employers?companyName=
+Authorization: Basic info@osta.gov.et osta@123
+
+
+### Register Employer
+
+POST {{host}}/api/employers
+Content-Type: application/json
+
+{
+  "companyName": "Oromia Science and Technology Authority",
+  "user": {
+    "phoneNumbers": ["+251150100001", "+251150100002", "+251150100003"],
+    "email": "info@osta.gov.et",
+    "password": "osta@123"
+  }
+}
+
+### Register Employer
+
+POST {{host}}/api/employers
+Content-Type: application/json
+
+{
+  "companyName": "Oromia Science and Technology Authority",
+  "user": {
+    "phoneNumbers": ["+251150100001", "+251150100002", "+251150100003"],
+    "email": "info@osta.gov.et",
+    "password": "osta@123"
+  }
+}

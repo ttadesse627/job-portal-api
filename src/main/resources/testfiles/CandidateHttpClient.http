@@ -1,0 +1,3 @@
+### GET Candidates
+GET {{host}}/api/candidates?firstName=
+Authorization: Basic tola@gmail.com tola@123

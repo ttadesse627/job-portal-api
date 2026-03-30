@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -14,7 +17,13 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Phone> phones = new ArrayList<>();
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
@@ -25,5 +34,15 @@ public class AppUser {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Employer employer;
+
+    public void addPhone(Phone phone) {
+        this.phones.add(phone);
+        phone.setUser(this);
+    }
+
+    public void removePhone(Phone phone) {
+        this.phones.remove(phone);
+        phone.setUser(null);
+    }
 
 }
