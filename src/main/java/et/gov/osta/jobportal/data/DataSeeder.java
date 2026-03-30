@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+
 @Configuration
 public class DataSeeder {
 
@@ -15,11 +17,14 @@ public class DataSeeder {
         return (args -> {
 
             CreateUserRequestDTO request = new CreateUserRequestDTO(
+                    null,
                     "tola@gmail.com",
                     "tola@123"
             );
 
-            userService.create(request, Role.ADMIN);
+            if (!userService.userExists(request.email())){
+                userService.create(request, Role.ADMIN);
+            }
         });
     }
 }
