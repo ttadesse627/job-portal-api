@@ -1,4 +1,5 @@
 package et.gov.osta.jobportal.dtos.responses;
 
-public record UserResponseDTO(Long Id, String email, String role) {
-}
+import java.util.Set;
+
+public record UserResponseDTO(Long Id, String email, Set<String> phoneNumbers, String role) {}
