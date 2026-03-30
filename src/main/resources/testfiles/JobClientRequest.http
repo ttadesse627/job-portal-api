@@ -1,0 +1,117 @@
+### POST Jobs
+###
+POST {{host}}/api/jobs
+Authorization: Basic info@osta.gov.et osta@123
+Content-Type: application/json
+
+{
+  "title": "Program Management Specialist (Business Intelligence)",
+  "position": "Sr.  Program Management Specialist (Business Intelligence)",
+  "location": "Addis Ababa",
+  "jobType": "FULL_TIME",
+  "description": "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.",
+  "companyName": "OSTA",
+  "salaryMin": 25000,
+  "salaryMax": 30000
+}
+
+###
+POST {{host}}/api/jobs
+Authorization: Basic info@osta.gov.et osta@123
+Content-Type: application/json
+
+{
+  "title": "Senior Data Scientist",
+  "position": "Sr. Data Scientist",
+  "location": "Addis Ababa",
+  "jobType": "FULL_TIME",
+  "description": "We are seeking a talented Data Scientist to join our AI research team. You will analyze large datasets, build predictive models, and develop machine learning algorithms. Responsibilities include data preprocessing, feature engineering, model deployment, and presenting insights to stakeholders. Experience with Python, TensorFlow, and SQL is required.",
+  "companyName": "DataDriven PLC",
+  "salaryMin": 40000,
+  "salaryMax": 55000
+}
+
+
+###
+POST {{host}}/api/jobs
+Authorization: Basic info@osta.gov.et osta@123
+Content-Type: application/json
+
+{
+  "title": "Digital Marketing Manager",
+  "position": "Marketing Manager",
+  "location": "Addis Ababa",
+  "jobType": "FULL_TIME",
+  "description": "Lead our digital marketing initiatives to drive brand awareness and customer acquisition. You will manage social media campaigns, SEO/SEM strategies, email marketing, and analytics reporting. The ideal candidate has 5+ years experience in digital marketing and proven track record of growing online presence.",
+  "companyName": "BrightMedia Ethiopia",
+  "salaryMin": 28000,
+  "salaryMax": 38000
+}
+
+###
+POST {{host}}/api/jobs
+Authorization: Basic info@osta.gov.et osta@123
+Content-Type: application/json
+
+{
+  "title": "Agile Project Manager",
+  "position": "Project Manager",
+  "location": "Addis Ababa",
+  "jobType": "FULL_TIME",
+  "description": "Coordinate cross-functional teams to deliver software projects on time and within budget. You will facilitate Scrum ceremonies, manage stakeholder expectations, track project metrics, and remove impediments. Certification in PMP or Scrum Master required. Excellent communication and leadership skills essential.",
+  "companyName": "InnovateTech Solutions",
+  "salaryMin": 45000,
+  "salaryMax": 60000
+}
+
+###
+POST {{host}}/api/jobs
+Authorization: Basic info@osta.gov.et osta@123
+Content-Type: application/json
+
+{
+  "title": "UI/UX Designer",
+  "position": "Product Designer",
+  "location": "Addis Ababa",
+  "jobType": "FULL_TIME",
+  "description": "Create beautiful and intuitive user interfaces for web and mobile applications. You will conduct user research, create wireframes and prototypes, design visual assets, and collaborate with developers. Proficiency in Figma, Adobe XD, and understanding of design systems required. Portfolio demonstrating your work is essential.",
+  "companyName": "CreativeMinds Design",
+  "salaryMin": 30000,
+  "salaryMax": 42000
+}
+
+###
+POST {{host}}/api/jobs
+Authorization: Basic info@osta.gov.et osta@123
+Content-Type: application/json
+
+{
+  "title": "Content Writer",
+  "position": "Technical Content Writer",
+  "location": "Addis Ababa",
+  "jobType": "PART_TIME",
+  "description": "Create engaging technical content including blog posts, documentation, and tutorials. You will research technology topics, write clear and concise articles, and optimize content for SEO. Remote work option available. Ideal for computer science students or recent graduates with strong writing skills.",
+  "companyName": "TechContent Hub",
+  "salaryMin": 15000,
+  "salaryMax": 22000
+}
+
+###
+POST {{host}}/api/jobs
+Authorization: Basic info@osta.gov.et osta@123
+Content-Type: application/json
+
+{
+  "title": "DevOps Engineer",
+  "position": "Cloud Infrastructure Engineer",
+  "location": "Addis Ababa",
+  "jobType": "CONTRACT",
+  "description": "6-month contract position to manage cloud infrastructure and CI/CD pipelines. You will work with AWS, Docker, Kubernetes, and Terraform. Responsibilities include monitoring system performance, implementing security best practices, and automating deployment processes. Immediate start required.",
+  "companyName": "CloudNative Solutions",
+  "salaryMin": 50000,
+  "salaryMax": 70000
+}
+
+### GET Jobs
+GET {{host}}/api/jobs
+Content-Type: application/json
