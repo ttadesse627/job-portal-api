@@ -14,7 +14,6 @@ import et.gov.osta.jobportal.exceptions.UnauthorizedException;
 import et.gov.osta.jobportal.utils.PagedResponse;
 import et.gov.osta.jobportal.utils.PaginationUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -42,6 +41,7 @@ public class JobService {
         job.setCompanyName(dto.companyName());
         job.setSalaryMin(dto.salaryMin());
         job.setSalaryMax(dto.salaryMax());
+        job.setDeadline(dto.deadline());
         job.setStatus(JobStatus.DRAFT);
         job.setEmployer(employer);
 
@@ -57,8 +57,10 @@ public class JobService {
         job.setLocation(dto.location());
         job.setJobType(dto.jobType());
         job.setDescription(dto.description());
+        job.setCompanyName(dto.companyName());
         job.setSalaryMin(dto.salaryMin());
         job.setSalaryMax(dto.salaryMax());
+        job.setDeadline(dto.deadline());
 
         return mapToDTO(jobRepository.save(job));
     }

@@ -38,6 +38,7 @@ public class ApplicationService {
         }
 
         Job job = getJobOrThrow(jobId);
+        validateDeadline(job);
 
         Application app = new Application();
         app.setJob(job);
@@ -105,6 +106,12 @@ public class ApplicationService {
     private Application getApplicationOrThrow(Long applicationId) {
         return applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Application not found"));
+    }
+
+    private void validateDeadline(Job job) {
+        if (job.getDeadline() != null && job.getDeadline().isBefore(LocalDateTime.now().toLocalDate())) {
+            throw new BadRequestException("Application deadline has passed");
+        }
     }
 
     private void validateEmployerAccess(Job job, Long userId, Role role) {

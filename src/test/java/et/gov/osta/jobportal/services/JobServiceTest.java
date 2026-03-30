@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,6 +57,10 @@ class JobServiceTest {
         assertEquals(99L, response.id());
         assertEquals(JobStatus.DRAFT, response.status());
         assertEquals("QA Portal Labs", response.companyName());
+
+        ArgumentCaptor<Job> captor = ArgumentCaptor.forClass(Job.class);
+        verify(jobRepository).save(captor.capture());
+        assertEquals(LocalDate.now().plusDays(14), captor.getValue().getDeadline());
     }
 
     @Test
@@ -70,6 +75,7 @@ class JobServiceTest {
 
         assertEquals("Updated Title", response.title());
         assertEquals("Platform Engineer", response.position());
+        assertEquals(LocalDate.now().plusDays(14), existingJob.getDeadline());
     }
 
     @Test
@@ -120,7 +126,8 @@ class JobServiceTest {
                 "Testing the job workflow",
                 "QA Portal Labs",
                 BigDecimal.valueOf(20000),
-                BigDecimal.valueOf(30000)
+                BigDecimal.valueOf(30000),
+                LocalDate.now().plusDays(14)
         );
     }
 
@@ -142,6 +149,7 @@ class JobServiceTest {
         job.setPosition("Original Position");
         job.setLocation("Addis Ababa");
         job.setJobType(JobType.FULL_TIME);
+        job.setDeadline(LocalDate.now().plusDays(7));
         return job;
     }
 

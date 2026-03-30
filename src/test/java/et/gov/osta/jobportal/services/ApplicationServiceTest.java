@@ -11,6 +11,7 @@ import et.gov.osta.jobportal.domain.repositories.ApplicationRepository;
 import et.gov.osta.jobportal.domain.repositories.CandidateRepository;
 import et.gov.osta.jobportal.domain.repositories.JobRepository;
 import et.gov.osta.jobportal.dtos.requests.ApplyRequestDTO;
+import et.gov.osta.jobportal.exceptions.BadRequestException;
 import et.gov.osta.jobportal.exceptions.UnauthorizedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -80,6 +82,21 @@ class ApplicationServiceTest {
 
         assertEquals(1, page.getTotalElements());
         assertEquals(8L, page.getContent().getFirst().id());
+    }
+
+    @Test
+    void applyRejectsExpiredJobDeadline() {
+        Candidate candidate = candidate(1L, 3L);
+        Job job = job(2L, 2L);
+        job.setDeadline(LocalDate.now().minusDays(1));
+
+        when(candidateRepository.findByUser_Id(3L)).thenReturn(Optional.of(candidate));
+        when(applicationRepository.existsByCandidateIdAndJobId(1L, 2L)).thenReturn(false);
+        when(jobRepository.findById(2L)).thenReturn(Optional.of(job));
+
+        assertThrows(BadRequestException.class, () ->
+                applicationService.apply(2L, 3L, new ApplyRequestDTO("Late application")));
+        verify(applicationRepository, never()).save(any(Application.class));
     }
 
     @Test
@@ -156,6 +173,7 @@ class ApplicationServiceTest {
         job.setId(jobId);
         job.setTitle("Applications QA Job");
         job.setEmployer(employer(employerUserId));
+        job.setDeadline(LocalDate.now().plusDays(7));
         return job;
     }
 

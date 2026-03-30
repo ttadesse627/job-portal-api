@@ -3,6 +3,7 @@ package et.gov.osta.jobportal.controllers;
 import et.gov.osta.jobportal.domain.enums.JobType;
 import et.gov.osta.jobportal.dtos.requests.JobRequestDTO;
 import et.gov.osta.jobportal.dtos.requests.JobResponseDTO;
+import jakarta.validation.Valid;
 import et.gov.osta.jobportal.helpers.CustomUserDetails;
 import et.gov.osta.jobportal.services.JobService;
 import et.gov.osta.jobportal.utils.PagedResponse;
@@ -27,7 +28,7 @@ public class JobController {
     @PostMapping
     @PreAuthorize("hasRole('EMPLOYER')")
     public ResponseEntity<JobResponseDTO> create(
-            @RequestBody JobRequestDTO dto,
+            @Valid @RequestBody JobRequestDTO dto,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
         return ResponseEntity.ok(jobService.create(dto, user.getId()));
@@ -37,7 +38,7 @@ public class JobController {
     @PreAuthorize("hasRole('EMPLOYER')")
     public ResponseEntity<JobResponseDTO> update(
             @PathVariable Long id,
-            @RequestBody JobRequestDTO dto,
+            @Valid @RequestBody JobRequestDTO dto,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
         return ResponseEntity.ok(jobService.update(id, dto, user.getId()));
