@@ -1,0 +1,7 @@
+package et.gov.osta.jobportal.exceptions;
+
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}

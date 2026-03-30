@@ -26,7 +26,6 @@ public class OpenApiConfig {
                         .version(apiVersion)
                         .description("OpenAPI definition for the Job Portal service.")
                         .contact(new Contact().name("OSTA Job Portal")))
-                .addSecurityItem(new SecurityRequirement().addList(BASIC_AUTH_SCHEME))
                 .components(new Components()
                         .addSecuritySchemes(BASIC_AUTH_SCHEME, new SecurityScheme()
                                 .type(SecurityScheme.Type.HTTP)

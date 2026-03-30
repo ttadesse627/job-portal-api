@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
+@Table(name = "applications",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"candidate_id", "job_id"}))
 public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +24,8 @@ public class Application {
     private Job job;
 
     @Enumerated(EnumType.STRING)
-    private ApplicationStatus status = ApplicationStatus.APPLIED;
+    private ApplicationStatus status;
     private LocalDateTime appliedAt;
+    private String resumePath;
+    private String coverLetter;
 }
