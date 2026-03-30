@@ -57,14 +57,14 @@ public class CandidateController {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') or @candidateSecurity.isOwner(#id, authentication.principal.id)")
     @GetMapping("/{id}")
     public ResponseEntity<CandidateResponseDTO> getById(@PathVariable Long id) {
 
         return ResponseEntity.ok(candidateService.getById(id));
     }
 
-    @PreAuthorize("hasRole('EMPLOYER')")
+    @PreAuthorize("hasRole('ADMIN') or @candidateSecurity.isOwner(#id, authentication.principal.id)")
     @PutMapping("/{id}")
     public ResponseEntity<CandidateResponseDTO> update(@PathVariable Long id, @RequestBody UpdateCandidateRequestDTO updateRequest) {
         return ResponseEntity.ok(candidateService.update(id, updateRequest));

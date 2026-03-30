@@ -43,6 +43,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getById(id));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public String getCurrentUser(@AuthenticationPrincipal CustomUserDetails user) {
         return "User ID: " + user.getId();

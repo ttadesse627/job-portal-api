@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -47,15 +49,10 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/employers").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/employers").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/employers/*").hasAnyRole("ADMIN", "EMPLOYER")
                         .requestMatchers(HttpMethod.POST, "/api/candidates").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/candidates").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/jobs").hasRole("EMPLOYER")
                         .requestMatchers(HttpMethod.GET, "/api/jobs").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/jobs/*").permitAll()
-                        .requestMatchers("/api/users").hasRole("ADMIN")
-                        .requestMatchers("/api/users/me").permitAll()
+                        .requestMatchers("/api/users/me").authenticated()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());

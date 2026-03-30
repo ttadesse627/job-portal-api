@@ -21,6 +21,7 @@ import java.net.URI;
 public class EmployerController {
     private final EmployerService employerService;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Returned Hello!");
@@ -57,14 +58,14 @@ public class EmployerController {
             ));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') or @employerSecurity.isOwner(#id, authentication.principal.id)")
     @GetMapping("/{id}")
     public ResponseEntity<EmployerResponseDTO> getById(@PathVariable Long id) {
 
         return ResponseEntity.ok(employerService.getById(id));
     }
 
-    @PreAuthorize("hasRole('EMPLOYER')")
+    @PreAuthorize("hasRole('ADMIN') or @employerSecurity.isOwner(#id, authentication.principal.id)")
     @PutMapping("/{id}")
     public ResponseEntity<EmployerResponseDTO> update(@PathVariable Long id, @RequestBody UpdateEmployerRequestDTO updateRequest) {
         return ResponseEntity.ok(employerService.update(id, updateRequest));
