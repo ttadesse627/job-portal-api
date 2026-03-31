@@ -16,6 +16,7 @@ Core capabilities:
 
 - employer registration
 - candidate registration with resume upload
+- optional resume parsing via SharpAPI when configured
 - HTTP Basic authentication with Spring Security
 - job creation, update, publish, close, delete, and listing
 - job filtering by title, position, location, type, and date range
@@ -73,6 +74,12 @@ Current database settings from `application.yaml`:
 - username: `postgres`
 - password: `postgres`
 - JDBC URL: `jdbc:postgresql://localhost:5432/job_portal`
+
+Resume parser settings:
+
+- provider: `SharpAPI Resume Parsing`
+- parser mode: multipart upload plus status polling
+- required config: API token
 
 Important runtime note:
 
@@ -219,7 +226,8 @@ Content-Type: application/json
   "description": "We are seeking a talented Data Scientist to join our AI research team.",
   "companyName": "DataDriven PLC",
   "salaryMin": 40000,
-  "salaryMax": 55000
+  "salaryMax": 55000,
+  "deadline": "2026-04-30"
 }
 ```
 
@@ -236,6 +244,8 @@ Expected form fields:
 - `password`
 - `resume`
 
+If `resume-parser.apy-hub.enabled=true`, the uploaded resume is sent directly to SharpAPI and the app polls the returned job status URL for the final parsed result.
+
 ## Validation Notes
 
 - email must be valid
@@ -243,6 +253,7 @@ Expected form fields:
 - password must include uppercase, lowercase, a digit, and a special character
 - candidate first and last names must be between `3` and `55` characters
 - candidate registration requires a resume file
+- job creation/update requires an application deadline that is today or later
 
 ## File Uploads
 
