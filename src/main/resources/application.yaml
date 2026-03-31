@@ -26,6 +26,15 @@ app:
   api:
     version: v1
 
+resume-parser:
+  apy-hub:
+    enabled: true
+    base-url: https://api.apyhub.com
+    api-key: ${APYHUB_API_KEY:}
+    language: English
+    poll-attempts: 10
+    poll-delay-millis: 2000
+
 scalar:
   enabled: true
   path: /scalar

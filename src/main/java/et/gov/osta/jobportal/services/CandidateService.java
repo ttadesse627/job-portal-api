@@ -1,23 +1,17 @@
 package et.gov.osta.jobportal.services;
 
 import et.gov.osta.jobportal.domain.entities.Candidate;
-import et.gov.osta.jobportal.domain.entities.Candidate;
-import et.gov.osta.jobportal.domain.entities.Employer;
 import et.gov.osta.jobportal.domain.entities.Resume;
 import et.gov.osta.jobportal.domain.enums.Role;
 import et.gov.osta.jobportal.domain.repositories.CandidateRepository;
 import et.gov.osta.jobportal.dtos.requests.CreateCandidateRequestDTO;
 import et.gov.osta.jobportal.dtos.requests.CreateUserRequestDTO;
 import et.gov.osta.jobportal.dtos.requests.UpdateCandidateRequestDTO;
-import et.gov.osta.jobportal.dtos.requests.UpdateEmployerRequestDTO;
 import et.gov.osta.jobportal.dtos.responses.CandidateResponseDTO;
-import et.gov.osta.jobportal.dtos.responses.CandidateResponseDTO;
-import et.gov.osta.jobportal.dtos.responses.EmployerResponseDTO;
 import et.gov.osta.jobportal.exceptions.BadRequestException;
 import et.gov.osta.jobportal.utils.PagedResponse;
 import et.gov.osta.jobportal.utils.PaginationUtils;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,8 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,6 +34,7 @@ public class CandidateService {
 
     private final CandidateRepository candidateRepository;
     private final UserService userService;
+    private final ResumeParsingService resumeParsingService;
 
     public Long create(CreateCandidateRequestDTO candidateRequestDTO, MultipartFile resumeFile){
         if (resumeFile == null || resumeFile.isEmpty()) {
@@ -69,6 +64,7 @@ public class CandidateService {
 
             Resume resume = new Resume();
             resume.setFileUrl(resumeUrl);
+            applyResumeParsing(resume, resumePath);
             savedCandidate.setResume(resume);
 
             var persistedCandidate = candidateRepository.saveAndFlush(savedCandidate);
@@ -120,7 +116,7 @@ public class CandidateService {
             throw new IllegalArgumentException("Resume file is required.");
         }
 
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(resumeFile.getOriginalFilename()))+"_"+candidateId;
+        String fileName = candidateId+"_"+StringUtils.cleanPath(Objects.requireNonNull(resumeFile.getOriginalFilename()));
         String uploadDirectory = "./uploads/resume/";
         Path path = Paths.get(uploadDirectory, fileName);
 
@@ -145,6 +141,16 @@ public class CandidateService {
         }
     }
 
+    private void applyResumeParsing(Resume resume, Path resumePath) {
+        ResumeParsingResult parsingResult = resumeParsingService.parse(resumePath);
+        resume.setParseStatus(parsingResult.status());
+        resume.setParserProvider(parsingResult.provider());
+        resume.setParsedFullName(parsingResult.fullName());
+        resume.setParsedEmail(parsingResult.email());
+        resume.setParsedPhone(parsingResult.phone());
+        resume.setParsedSkills(parsingResult.skills());
+        resume.setParseError(parsingResult.error());
+    }
 
     public CandidateResponseDTO mapToResponse(Candidate candidate){
         return new CandidateResponseDTO(
@@ -152,7 +158,14 @@ public class CandidateService {
                 candidate.getFirstName(),
                 candidate.getLastName(),
                 candidate.getUser().getEmail(),
-                candidate.getResume() != null ? candidate.getResume().getFileUrl() : null
+                candidate.getResume() != null ? candidate.getResume().getFileUrl() : null,
+                candidate.getResume() != null && candidate.getResume().getParseStatus() != null
+                        ? candidate.getResume().getParseStatus().name()
+                        : null,
+                candidate.getResume() != null ? candidate.getResume().getParsedFullName() : null,
+                candidate.getResume() != null ? candidate.getResume().getParsedEmail() : null,
+                candidate.getResume() != null ? candidate.getResume().getParsedPhone() : null,
+                candidate.getResume() != null ? candidate.getResume().getParsedSkills() : null
             );
     }
 }

@@ -5,5 +5,10 @@ public record CandidateResponseDTO(
         String firstName,
         String lastName,
         String email,
-        String resumeUrl
+        String resumeUrl,
+        String resumeParseStatus,
+        String parsedFullName,
+        String parsedEmail,
+        String parsedPhone,
+        String parsedSkills
 ){}
