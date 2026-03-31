@@ -275,18 +275,4 @@ This means:
 - OpenAPI security is configured for Basic Auth
 - security debug logging is enabled in the current configuration
 - only a basic context-load test currently exists
-
-## Suggested Improvements
-
-If this project is intended for production or team use, the next useful improvements would be:
-
-- move secrets to environment variables
-- replace `create-drop` with a migration-based strategy such as Flyway or Liquibase
-- add controller and service tests
-- add JWT or session-based auth if needed by frontend clients
-- store resumes in object storage instead of local disk
-- add profile-specific configuration for local, test, and production environments
-
-## License
-
-Add a license section if you plan to share or publish the project publicly.
+- NOTE: I generated the tests using AI for respective services to simplify testing.
